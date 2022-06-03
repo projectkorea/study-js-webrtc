@@ -13,8 +13,9 @@ app.use('/public', express.static(__dirname + '/public'))
 app.get('/', (req, res) => res.render('home'))
 app.get('/*', (req, res) => res.redirect('/'))
 
-// app.listen(PORT, handleListen)
 const httpServer = http.createServer(app)
-const websocketServer = new WebSocketServer({ server })
-// "ws": "^8.2.3" 버전부터는 Websocket.Server 가 아니라 WebSocketServer 입니다
-server.listen(PORT, handleListen)
+const webSocketServer = new WebSocketServer({ httpServer })
+// const websocketServer = new WebSocketServer() 한 포트에서 웹 소켓 서버만 실행할 경우
+// "ws": "^8.2.3" 버전부터는 Websocket.Server 가 아니라 WebSocketServer 이다.
+
+httpServer.listen(PORT, handleListen)
