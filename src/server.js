@@ -14,8 +14,28 @@ app.get('/', (req, res) => res.render('home'))
 app.get('/*', (req, res) => res.redirect('/'))
 
 const httpServer = http.createServer(app)
-const webSocketServer = new WebSocketServer({ httpServer })
-// const websocketServer = new WebSocketServer() 한 포트에서 웹 소켓 서버만 실행할 경우
+const webSocketServer = new WebSocketServer({ server: httpServer })
+// co3nst websocketServer = new WebSocketServer() 한 포트에서 웹 소켓 서버만 실행할 경우
 // "ws": "^8.2.3" 버전부터는 Websocket.Server 가 아니라 WebSocketServer 이다.
+
+const sockets = []
+
+webSocketServer.on('connection', (socket) => {
+  console.log('Connected to Browser ✅')
+
+  sockets.push(socket)
+  socket.on('message', (message) => {
+    sockets.forEach((browser) => browser.send(message))
+  })
+
+  socket.on('close', () => console.log('Disconnected from the Browser ❗️'))
+  socket.on('message', (message) => {
+    socket.send(message)
+    console.log(message.toString('utf8'))
+  })
+
+  socket.on('error', (err) => console.log(err))
+  socket.send("I'm the data 🌝")
+})
 
 httpServer.listen(PORT, handleListen)
