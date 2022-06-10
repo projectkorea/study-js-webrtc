@@ -25,7 +25,7 @@ webSocketServer.on('connection', (socket) => {
 
   sockets.push(socket)
   socket.on('message', (message) => {
-    sockets.forEach((browser) => browser.send(message))
+    sockets.forEach((aBrowserSocket) => aBrowserSocket.send(message))
   })
 
   socket.on('close', () => console.log('Disconnected from the Browser ❗️'))
