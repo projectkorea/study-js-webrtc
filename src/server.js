@@ -24,15 +24,14 @@ webSocketServer.on('connection', (socket) => {
   console.log('Connected to Browser ✅')
 
   sockets.push(socket)
+
   socket.on('message', (message) => {
-    sockets.forEach((aBrowserSocket) => aBrowserSocket.send(message))
+    sockets.forEach((aBrowserSocket) =>
+      aBrowserSocket.send(message.toString('utf8'))
+    )
   })
 
   socket.on('close', () => console.log('Disconnected from the Browser ❗️'))
-  socket.on('message', (message) => {
-    socket.send(message)
-    console.log(message.toString('utf8'))
-  })
 
   socket.on('error', (err) => console.log(err))
   socket.send("I'm the data 🌝")

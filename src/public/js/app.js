@@ -17,7 +17,9 @@ socket.addEventListener('open', () => {
 })
 
 socket.addEventListener('message', (message) => {
-  console.log(message)
+  const li = document.createElement('li')
+  li.innerText = message.data
+  messageList.appendChild(li)
 })
 
 socket.addEventListener('close', () => {
